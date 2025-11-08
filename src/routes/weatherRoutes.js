@@ -1,4 +1,5 @@
 import express from 'express';
+import pool from '../config/db.js';
 import { fetchAndSaveWeatherData } from '../services/openWeatherService.js';
 
 const router = express.Router();
@@ -16,6 +17,21 @@ router.get('/', async (req, res) => {
   } catch (error) {
     console.error('Erro na rota /weather:', error);
     res.status(500).json({ error: 'Erro ao buscar ou salvar dados do clima.' });
+  }
+});
+
+// Retorna todos os registros de clima salvos no banco de dados
+router.get("/all", async (req, res) => {
+  try {
+    const result = await pool.query("SELECT * FROM weather_data ORDER BY created_at DESC");
+    res.status(200).json({
+      message: "Todos os registros de clima",
+      count: result.rows.length,
+      data: result.rows,
+    });
+  } catch (error) {
+    console.error("Erro ao buscar registros de clima:", error);
+    res.status(500).json({ error: "Erro ao consultar registros do banco." });
   }
 });
 
