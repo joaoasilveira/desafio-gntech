@@ -1,8 +1,7 @@
 import express from 'express';
-import pool from '../config/db.js';
-import { fetchAndSaveWeatherData } from '../services/openWeatherService.js';
 import Logger from '../utils/logger.js';
 import { z } from 'zod';
+import * as weatherService from '../services/weatherService.js';
 
 const router = express.Router();
 
@@ -21,7 +20,7 @@ router.post('/', async (req, res) => {
 
     const { city } = parseResult.data;
     
-    const data = await fetchAndSaveWeatherData(city);
+    const data = await weatherService.fetchAndSaveWeatherData(city);
 
     res.status(201).json({
       message: `Weather data for ${city} saved successfully!`,
@@ -40,24 +39,16 @@ router.get("/all", async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
-    const offset = (page - 1) * limit;
-
-    const totalResult = await pool.query("SELECT COUNT(*) FROM weather_data");
-    const total = parseInt(totalResult.rows[0].count);
-    const totalPages = Math.ceil(total / limit);
-
-    const result = await pool.query(
-      "SELECT * FROM weather_data ORDER BY created_at DESC LIMIT $1 OFFSET $2",
-      [limit, offset]
-    );
-      res.status(200).json({
+    const { rows, total, totalPages } = await weatherService.getWeatherList({ page, limit });
+    
+    res.status(200).json({
       message: "All weather records retrieved successfully.",
       page,
       limit,
       total,
       totalPages,
-      count: result.rows.length,
-      data: result.rows,
+      count: rows.length,
+      data: rows,
     });
   } catch (error) {
     Logger.error('Error fetching weather records:', error);

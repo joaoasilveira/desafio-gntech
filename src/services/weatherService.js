@@ -1,7 +1,7 @@
 import axios from 'axios';
-import pool from '../config/db.js';
 import Logger from '../utils/logger.js'
 import { OPENWEATHER_API_KEY, OPENWEATHER_BASE_URL, CITY } from '../config/config.js';
+import * as weatherRepo from '../repositories/weatherRepository.js';
 
 export async function fetchAndSaveWeatherData(city = CITY) {
   try {
@@ -18,25 +18,18 @@ export async function fetchAndSaveWeatherData(city = CITY) {
       wind_speed: data.wind.speed,
     };
 
-    const query = `
-      INSERT INTO weather_data (city, temperature, description, humidity, wind_speed)
-      VALUES ($1, $2, $3, $4, $5)
-      RETURNING *;
-    `;
-
-    const result = await pool.query(query, [
-      weather.city,
-      weather.temperature,
-      weather.description,
-      weather.humidity,
-      weather.wind_speed,
-    ]);
+    const savedWeather = await weatherRepo.insertWeather(weather);
 
     Logger.info(`Weather data saved successfully for city: ${city}`);
 
-    return result.rows[0];
+    return savedWeather;
   } catch (error) {
     Logger.error('Error fetching or saving weather data:', error.message);
     throw error;
   }
+}
+
+export async function getWeatherList({ page = 1, limit = 10 } = {}) {
+  const offset = (page - 1) * limit;
+  return await weatherRepo.getWeatherAll({ limit, offset });
 }
