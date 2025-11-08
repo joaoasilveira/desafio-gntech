@@ -2,22 +2,38 @@ import express from 'express';
 import pool from '../config/db.js';
 import { fetchAndSaveWeatherData } from '../services/openWeatherService.js';
 import Logger from '../utils/logger.js';
+import { z } from 'zod';
 
 const router = express.Router();
 
-router.get('/', async (req, res) => {
+const weatherRequestSchema = z.object({
+  city: z.string().min(1, "City name is required"),
+});
+
+router.post('/', async (req, res) => {
   try {
-    const city = req.query.city || process.env.CITY;
+    const parseResult = weatherRequestSchema.safeParse(req.query);
+
+    if (!parseResult.success) {
+      Logger.warn('Invalid request parameters', parseResult.error.format());
+      return res.status(400).json({ error: parseResult.error.errors[0].message });
+    }
+
+    const { city } = parseResult.data;
+    
     const data = await fetchAndSaveWeatherData(city);
 
-    res.status(200).json({
+    res.status(201).json({
       message: `Weather data for ${city} saved successfully!`,
       data,
     });
   } catch (error) {
-  Logger.error('Error in /weather route:', error);
-  res.status(500).json({ error: 'Failed to fetch or save weather data.' });
-}
+      Logger.error('Error in /weather route:', error);
+      if (error.response?.status === 404) {
+        return res.status(404).json({ error: 'City not found' });
+      }
+      res.status(500).json({ error: 'Failed to fetch or save weather data.' });
+  } 
 });
 
 router.get("/all", async (req, res) => {

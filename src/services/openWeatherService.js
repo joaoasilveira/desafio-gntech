@@ -3,7 +3,7 @@ import pool from '../config/db.js';
 import Logger from '../utils/logger.js'
 import { OPENWEATHER_API_KEY, OPENWEATHER_BASE_URL, CITY } from '../config/config.js';
 
-export async function fetchAndSaveWeatherData(city = process.env.CITY) {
+export async function fetchAndSaveWeatherData(city = CITY) {
   try {
     const url = `${OPENWEATHER_BASE_URL}?q=${city}&appid=${OPENWEATHER_API_KEY}&units=metric&lang=pt_br`;
 

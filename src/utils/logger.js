@@ -1,3 +1,4 @@
+import { NODE_ENV } from '../config/config.js';
 class Logger {
   static info(message, ...args) {
     console.log(`[INFO] ${new Date().toISOString()} - ${message}`, ...args);
@@ -12,7 +13,7 @@ class Logger {
   }
 
   static debug(message, ...args) {
-    if (process.env.NODE_ENV === 'development') {
+    if (NODE_ENV === 'development') {
       console.debug(`[DEBUG] ${new Date().toISOString()} - ${message}`, ...args);
     }
   }
