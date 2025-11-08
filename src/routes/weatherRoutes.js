@@ -38,9 +38,24 @@ router.post('/', async (req, res) => {
 
 router.get("/all", async (req, res) => {
   try {
-    const result = await pool.query("SELECT * FROM weather_data ORDER BY created_at DESC");
-    res.status(200).json({
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const offset = (page - 1) * limit;
+
+    const totalResult = await pool.query("SELECT COUNT(*) FROM weather_data");
+    const total = parseInt(totalResult.rows[0].count);
+    const totalPages = Math.ceil(total / limit);
+
+    const result = await pool.query(
+      "SELECT * FROM weather_data ORDER BY created_at DESC LIMIT $1 OFFSET $2",
+      [limit, offset]
+    );
+      res.status(200).json({
       message: "All weather records retrieved successfully.",
+      page,
+      limit,
+      total,
+      totalPages,
       count: result.rows.length,
       data: result.rows,
     });
