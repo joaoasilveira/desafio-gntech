@@ -1,13 +1,11 @@
 import axios from 'axios';
-import dotenv from 'dotenv';
 import pool from '../config/db.js';
 import Logger from '../utils/logger.js'
-
-dotenv.config();
+import { OPENWEATHER_API_KEY, OPENWEATHER_BASE_URL, CITY } from '../config/config.js';
 
 export async function fetchAndSaveWeatherData(city = process.env.CITY) {
   try {
-    const url = `${process.env.OPENWEATHER_BASE_URL}?q=${city}&appid=${process.env.OPENWEATHER_API_KEY}&units=metric&lang=pt_br`;
+    const url = `${OPENWEATHER_BASE_URL}?q=${city}&appid=${OPENWEATHER_API_KEY}&units=metric&lang=pt_br`;
 
     const response = await axios.get(url);
     const data = response.data;

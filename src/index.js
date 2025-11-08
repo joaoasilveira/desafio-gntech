@@ -1,14 +1,10 @@
 import express from "express";
-import Logger from './utils/logger.js';
 import pool from './config/db.js';
-import dotenv from "dotenv";
 import weatherRoutes from './routes/weatherRoutes.js';
-
-dotenv.config();
+import Logger from './utils/logger.js';
+import { PORT } from './config/config.js';
 
 const app = express();
-const PORT = process.env.PORT || 3000;
-
 app.use(express.json());
 
 app.get("/health", (req, res) => {
