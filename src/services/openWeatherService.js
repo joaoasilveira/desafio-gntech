@@ -1,6 +1,7 @@
 import axios from 'axios';
 import dotenv from 'dotenv';
 import pool from '../config/db.js';
+import Logger from '../utils/logger.js'
 
 dotenv.config();
 
@@ -11,7 +12,6 @@ export async function fetchAndSaveWeatherData(city = process.env.CITY) {
     const response = await axios.get(url);
     const data = response.data;
 
-    // Extrai os dados relevantes
     const weather = {
       city: data.name,
       temperature: data.main.temp,
@@ -20,7 +20,6 @@ export async function fetchAndSaveWeatherData(city = process.env.CITY) {
       wind_speed: data.wind.speed,
     };
 
-    // Salva no banco
     const query = `
       INSERT INTO weather_data (city, temperature, description, humidity, wind_speed)
       VALUES ($1, $2, $3, $4, $5)
@@ -35,11 +34,11 @@ export async function fetchAndSaveWeatherData(city = process.env.CITY) {
       weather.wind_speed,
     ]);
 
-    console.log('✅ Dados salvos com sucesso:', result.rows[0]);
+    Logger.info(`Weather data saved successfully for city: ${city}`);
 
     return result.rows[0];
   } catch (error) {
-    console.error('❌ Erro ao buscar ou salvar dados do clima:', error.message);
+    Logger.error('Error fetching or saving weather data:', error.message);
     throw error;
   }
 }
