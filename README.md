@@ -19,7 +19,7 @@ API Node.js para consulta e armazenamento de dados climáticos utilizando OpenWe
 1. Clone o repositório:
 
 ```bash
-git clone <URL_DO_SEU_REPOSITORIO>
+git clone https://github.com/joaoasilveira/desafio-gntech
 cd desafio-gntech
 ```
 
