@@ -17,11 +17,10 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - DATABASE_URL: ${DATABASE_URL:-postgresql://postgres:postgres@db:5432/weatherdb}
-      - PORT: ${PORT:-3000}
-      - OPENWEATHER_API_KEY: ${OPENWEATHER_API_KEY}
-      - OPENWEATHER_BASE_URL: ${OPENWEATHER_BASE_URL}
-      - CITY=${CITY}
+      DATABASE_URL: ${DATABASE_URL:-postgresql://postgres:postgres@db:5432/weatherdb}
+      PORT: ${PORT:-3000}
+      OPENWEATHER_API_KEY: ${OPENWEATHER_API_KEY}
+      OPENWEATHER_BASE_URL: ${OPENWEATHER_BASE_URL}
     depends_on:
       - db
 
