@@ -90,7 +90,7 @@ collection:
     parameters:
       - id: pair_a802abb301964d3f8946a237ce29e524
         name: city
-        value: "123"
+        value: "Florianópolis"
         disabled: false
     headers:
       - name: User-Agent

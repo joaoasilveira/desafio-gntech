@@ -112,7 +112,7 @@ Testes automatizados com **Jest** e **Supertest** cobrem os seguintes cenários:
 * `POST /weather` com cidade válida → retorna 201 e salva dados
 * `GET /weather/all` → retorna dados paginados
 
-Para rodar os testes:
+Para rodar os testes localmente, é necessário alterar temporariamente a variável `DATABASE_URL` no `.env` para usar `localhost` no lugar de `db`, pois os testes não rodam dentro do container Docker.
 
 ```bash
 npm run test
