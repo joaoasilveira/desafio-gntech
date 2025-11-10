@@ -1,0 +1,145 @@
+type: collection.insomnia.rest/5.0
+name: OpenWeather API
+meta:
+  id: wrk_6762a0a4dff044dba54227d78bb61004
+  created: 1762522992630
+  modified: 1762522992630
+collection:
+  - url: "{{ _.BASE_URL }}/weather/all?"
+    name: List all records
+    meta:
+      id: req_89ce14f5aedb461798e146b56cd57a88
+      created: 1762523008260
+      modified: 1762740799624
+      isPrivate: false
+      sortKey: -1762523008260
+    method: GET
+    parameters:
+      - id: pair_203c5374b80842908448132e71f8292b
+        name: page
+        value: "2"
+        disabled: false
+      - id: pair_b6e5c17236014dbfba01d4c4c428fd24
+        name: limit
+        value: "1"
+        disabled: false
+    headers:
+      - name: User-Agent
+        value: insomnia/11.1.0
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: "{{ _.BASE_URL }}/weather"
+    name: without city name
+    meta:
+      id: req_6b13fee138a8494da095c59f6ea8960c
+      created: 1762654296947
+      modified: 1762738731636
+      isPrivate: false
+      sortKey: -1762460902253
+    method: POST
+    parameters:
+      - id: pair_fb1c28bd60694e039370f37928101386
+        name: citys
+        disabled: false
+    headers:
+      - name: User-Agent
+        value: insomnia/11.1.0
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: "{{ _.BASE_URL }}/health"
+    name: Health
+    meta:
+      id: req_fd706d8b2fb240129212190a2313deb4
+      created: 1762654356806
+      modified: 1762738814211
+      isPrivate: false
+      sortKey: -1762654356806
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/11.1.0
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: "{{ _.BASE_URL }}/weather"
+    name: with valid city name
+    meta:
+      id: req_2b269ced15ad4c05b841a376d67d9731
+      created: 1762654382554
+      modified: 1762739782701
+      isPrivate: false
+      sortKey: -1762491955256.5
+    method: POST
+    parameters:
+      - id: pair_a802abb301964d3f8946a237ce29e524
+        name: city
+        value: "123"
+        disabled: false
+    headers:
+      - name: User-Agent
+        value: insomnia/11.1.0
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: "{{ _.BASE_URL }}/weather"
+    name: with invalid city name
+    meta:
+      id: req_1d9f0ef3d14047388b6f7ab2389e0948
+      created: 1762733348897
+      modified: 1762738755441
+      isPrivate: false
+      sortKey: -1762476428754.75
+    method: POST
+    parameters:
+      - id: pair_a802abb301964d3f8946a237ce29e524
+        name: city
+        value: Florianópolis123
+        disabled: false
+    headers:
+      - name: User-Agent
+        value: insomnia/11.1.0
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_ad403e5d70587505ba69593597d948481d746cb2
+    created: 1762522992636
+    modified: 1762522992636
+environments:
+  name: Base Environment
+  meta:
+    id: env_ad403e5d70587505ba69593597d948481d746cb2
+    created: 1762522992633
+    modified: 1762738741499
+    isPrivate: false
+  data:
+    BASE_URL: http://localhost:3000

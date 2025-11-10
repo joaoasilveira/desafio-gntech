@@ -12,6 +12,8 @@ API Node.js para consulta e armazenamento de dados climáticos utilizando OpenWe
 * Axios
 * dotenv
 * Zod
+* Jest e Supertest
+* Insomnia
 
 ---
 
@@ -90,12 +92,43 @@ http://localhost:3000
 
 * **POST /weather**
   Consulta dados do clima via API OpenWeather e salva no banco.
-  Parâmetro obrigatório: `city` (query string)
+  Parâmetro obrigatório (query string): `city`
   Exemplo: `/weather?city=Florianopolis`
 
 * **GET /weather/all**
   Retorna todos os registros salvos no banco, do mais recente ao mais antigo.
   Suporta paginação via query string: `?page=1&limit=10`
+  Exemplo: `/weather/all?page=1&limit=10`
+
+---
+
+## Testes
+
+Testes automatizados com **Jest** e **Supertest** cobrem os seguintes cenários:
+
+* `GET /health` → verifica se o servidor está funcionando
+* `POST /weather` sem cidade → retorna 400
+* `POST /weather` com cidade inválida → retorna 404
+* `POST /weather` com cidade válida → retorna 201 e salva dados
+* `GET /weather/all` → retorna dados paginados
+
+Para rodar os testes:
+
+```bash
+npm run test
+```
+
+---
+
+## Documentação Insomnia
+
+A coleção de requisições para testar a API está disponível em:
+
+```
+docs/insomnia-weatherAPI
+```
+
+Importe no Insomnia para testar todas as rotas da API.
 
 ---
 
@@ -111,6 +144,8 @@ desafio-gntech/
 │  ├─ repositories/weatherRepository.js
 │  ├─ utils/logger.js
 │  └─ index.js
+├─ docs/
+│  └─ insomnia-weatherAPI
 ├─ migrations/
 ├─ Dockerfile
 ├─ docker-compose.yml
@@ -120,10 +155,8 @@ desafio-gntech/
 └─ README.md
 ```
 
----
-
 ## Observações
 
-* Todas as credenciais sensíveis devem ficar no `.env` e **não** no Git.
+* Todas as credenciais sensíveis devem permanecer no `.env` e **não** devem ser commitadas.
 * O arquivo `.env-example` já contém os valores padrões que você pode usar.
 * A aplicação está pronta para rodar tanto localmente quanto em ambiente containerizado.
