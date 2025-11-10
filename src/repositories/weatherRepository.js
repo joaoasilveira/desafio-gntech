@@ -1,4 +1,4 @@
-import pool from '../db/index.js';
+import pool from '../config/db.js';
 
 export async function insertWeather(weather) {
   const query = `

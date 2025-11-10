@@ -5,17 +5,26 @@ import * as weatherService from '../services/weatherService.js';
 
 const router = express.Router();
 
-const weatherRequestSchema = z.object({
-  city: z.string().min(1, "City name is required"),
-});
+const weatherRequestSchema = z
+  .object({
+    city: z
+      .string()
+      .min(1, "City name is required")
+      .refine((val) => val !== undefined && val !== null, {
+        message: "City name is required",
+      }),
+  })
+  .strict();
 
 router.post('/', async (req, res) => {
   try {
-    const parseResult = weatherRequestSchema.safeParse(req.query);
+    const query = req.query.city ?? "";
+    const parseResult = weatherRequestSchema.safeParse({ city: query });
 
     if (!parseResult.success) {
-      Logger.warn('Invalid request parameters', parseResult.error.format());
-      return res.status(400).json({ error: parseResult.error.errors[0].message });
+      const firstError = parseResult.error.issues?.[0]?.message || "Invalid input";
+      Logger.warn("Invalid request parameters", parseResult.error.format());
+      return res.status(400).json({ error: firstError });
     }
 
     const { city } = parseResult.data;

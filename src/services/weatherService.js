@@ -3,7 +3,7 @@ import Logger from '../utils/logger.js'
 import { OPENWEATHER_API_KEY, OPENWEATHER_BASE_URL, CITY } from '../config/config.js';
 import * as weatherRepo from '../repositories/weatherRepository.js';
 
-export async function fetchAndSaveWeatherData(city = CITY) {
+export async function fetchAndSaveWeatherData(city) {
   try {
     const url = `${OPENWEATHER_BASE_URL}?q=${city}&appid=${OPENWEATHER_API_KEY}&units=metric&lang=pt_br`;
 

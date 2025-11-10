@@ -1,17 +1,7 @@
-import express from "express";
+import app from './app.js';
 import pool from './config/db.js';
-import weatherRoutes from './routes/weatherRoutes.js';
-import Logger from './utils/logger.js';
 import { PORT } from './config/config.js';
-
-const app = express();
-app.use(express.json());
-
-app.get("/health", (req, res) => {
-  res.json({ status: "ok", message: "Server running properly" });
-});
-
-app.use("/weather", weatherRoutes);
+import Logger from './utils/logger.js';
 
 pool.query('SELECT NOW()', (err, result) => {
   if (err) {
