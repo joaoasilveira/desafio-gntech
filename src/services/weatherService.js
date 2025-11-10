@@ -1,6 +1,6 @@
 import axios from 'axios';
 import Logger from '../utils/logger.js'
-import { OPENWEATHER_API_KEY, OPENWEATHER_BASE_URL, CITY } from '../config/config.js';
+import { OPENWEATHER_API_KEY, OPENWEATHER_BASE_URL } from '../config/config.js';
 import * as weatherRepo from '../repositories/weatherRepository.js';
 
 export async function fetchAndSaveWeatherData(city) {

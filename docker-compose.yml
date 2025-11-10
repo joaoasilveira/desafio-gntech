@@ -4,9 +4,9 @@ services:
   db:
     image: postgres:15
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: weatherdb
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-weatherdb}
     ports:
       - "5432:5432"
     volumes:
@@ -17,10 +17,10 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - DATABASE_URL=postgresql://postgres:postgres@db:5432/weatherdb
-      - PORT=3000
-      - OPENWEATHER_API_KEY=${OPENWEATHER_API_KEY}
-      - OPENWEATHER_BASE_URL=${OPENWEATHER_BASE_URL}
+      - DATABASE_URL: ${DATABASE_URL:-postgresql://postgres:postgres@db:5432/weatherdb}
+      - PORT: ${PORT:-3000}
+      - OPENWEATHER_API_KEY: ${OPENWEATHER_API_KEY}
+      - OPENWEATHER_BASE_URL: ${OPENWEATHER_BASE_URL}
       - CITY=${CITY}
     depends_on:
       - db

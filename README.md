@@ -11,6 +11,7 @@ API Node.js para consulta e armazenamento de dados climáticos utilizando OpenWe
 * Docker / Docker Compose
 * Axios
 * dotenv
+* Zod (validação de input)
 
 ---
 
@@ -69,6 +70,17 @@ http://localhost:3000
 
 > O container do Postgres persiste os dados usando o volume `db-data`.
 
+> Configurações do banco e porta podem ser sobrescritas via `.env`.
+> Exemplo de defaults no Docker Compose:
+>
+> ```text
+> POSTGRES_USER=postgres
+> POSTGRES_PASSWORD=postgres
+> POSTGRES_DB=weatherdb
+> DATABASE_URL=postgresql://postgres:postgres@db:5432/weatherdb
+> PORT=3000
+> ```
+
 ---
 
 ## Endpoints Disponíveis
@@ -76,13 +88,14 @@ http://localhost:3000
 * **GET /health**
   Retorna status do servidor.
 
-* **GET /weather**
+* **POST /weather**
   Consulta dados do clima via API OpenWeather e salva no banco.
-  Parâmetro opcional: `city`
+  Parâmetro obrigatório: `city` (query string)
   Exemplo: `/weather?city=Florianopolis`
 
 * **GET /weather/all**
   Retorna todos os registros salvos no banco, do mais recente ao mais antigo.
+  Suporta paginação via query string: `?page=1&limit=10`
 
 ---
 
@@ -92,14 +105,18 @@ http://localhost:3000
 desafio-gntech/
 ├─ src/
 │  ├─ config/db.js
+│  ├─ config/config.js
 │  ├─ routes/weatherRoutes.js
-│  ├─ services/openWeatherService.js
+│  ├─ services/weatherService.js
+│  ├─ repositories/weatherRepository.js
+│  ├─ utils/logger.js
 │  └─ index.js
 ├─ migrations/
 ├─ Dockerfile
 ├─ docker-compose.yml
 ├─ package.json
 ├─ .env-example
+├─ .dockerignore
 └─ README.md
 ```
 
@@ -108,4 +125,5 @@ desafio-gntech/
 ## Observações
 
 * Todas as credenciais sensíveis devem ficar no `.env` e **não** no Git.
+* O arquivo `.env-example` já contém os valores padrões que você pode usar.
 * A aplicação está pronta para rodar tanto localmente quanto em ambiente containerizado.
