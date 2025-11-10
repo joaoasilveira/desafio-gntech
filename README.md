@@ -11,7 +11,7 @@ API Node.js para consulta e armazenamento de dados climáticos utilizando OpenWe
 * Docker / Docker Compose
 * Axios
 * dotenv
-* Zod (validação de input)
+* Zod
 
 ---
 
